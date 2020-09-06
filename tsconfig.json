@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "target": "ES2017",
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "src",
+        "baseUrl": ".",
+        "typeRoots": [
+            "./node_modules/@types",
+            "./src/Types/index.d.ts"
+        ]
+    },
+    "include": [
+        "src/**/*",
+        "**/**/*"
+    ],
+    "exclude": [
+      "node_modules",
+      "**/*.spec.ts"
+    ]
+}
