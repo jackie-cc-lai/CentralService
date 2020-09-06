@@ -2,6 +2,7 @@
 .psci_modules
 bower_components
 node_modules
+.vscode
 
 # Generated files
 .psci
@@ -11,3 +12,6 @@ output
 /*.js
 *.js
 *.map
+
+# Environment variables
+.env

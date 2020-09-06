@@ -4,8 +4,8 @@ import { AuthService } from "../Scripts/AuthService";
 export class RouteAuth{
     public static async Auth(req:Request,res:Response){
         try{
-            const host = req.headers.host;
-            console.log(host);
+            const host = req.headers.origin;
+            console.log(req.headers);
             const authService = new AuthService();
             const token = await authService.Auth(host);
             console.log(token);
@@ -17,7 +17,8 @@ export class RouteAuth{
 
     public static async Check(req:Request, res:Response){
         try{
-            const host = req.headers.host;
+            const host = req.headers.origin;
+            console.log(req.headers);
             const authService = new AuthService();
             const token = req.headers.authorization.split(" ")[1];
             const newToken = await authService.Check(token, host);

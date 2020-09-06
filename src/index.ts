@@ -4,11 +4,12 @@ import http = require('http');
 import bodyParser from 'body-parser';
 import { RouteAuth } from "./Routes/RouteAuth";
 import { RouteApi } from "./Routes/RouteApi";
+import path  = require('path');
 
 const allowList = ['http://localhost:3000', 'http://localhost:4200'];
 const jsonParser = bodyParser.json()
 const app = express();
-const port = 8080; // default port to listen
+const port = parseInt(process.env.PORT); // default port to listen
 app.use(cors({
     origin:(origin, callback) =>{
         if(!origin) return callback(null, true);
