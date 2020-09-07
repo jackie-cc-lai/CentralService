@@ -3,7 +3,7 @@ import cors = require('cors');
 import http = require('http');
 import bodyParser from 'body-parser';
 import { RouteAuth } from "./Routes/RouteAuth";
-import { RouteApi } from "./Routes/RouteApi";
+import { RouteApp } from "./Routes/RouteApp";
 import path  = require('path');
 
 const allowList = ['http://localhost:3000', 'http://localhost:4200'];
@@ -21,14 +21,16 @@ app.use(cors({
         return callback(null,true);
     }
 }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 // define a route handler for the default home page
 app.get( "/ping", (req:express.Request, res:express.Response) => {
     res.send( "Service is active" );
 });
 app.get("/Auth/Authorize", RouteAuth.Auth);
 app.get("/Auth/Check", RouteAuth.Check);
-app.get("/api/:app", RouteApi.Get);
-app.post("/api/:app", jsonParser, RouteApi.Post);
+app.get("/api/:app", RouteApp.Get);
+app.post("/api/:app", jsonParser, RouteApp.Post);
 
 // start the Express server
 app.listen( port, () => {

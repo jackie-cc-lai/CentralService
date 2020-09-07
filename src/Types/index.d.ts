@@ -1,6 +1,6 @@
-declare namespace Express{
-    export type Request = _Request;
-    export interface _Request{
-        body:any;
-    }
+import { IncomingMessage } from "http";
+
+
+export interface Request extends IncomingMessage {
+    body:any;
 }
