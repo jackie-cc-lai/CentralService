@@ -9,7 +9,7 @@ export class AppService{
         this._database = db;
     }
 
-    public async Parse(body:any){
+    public async ParsePost(body:any){
         const method = body.method;
         if(method == "GetWeather"){
             let weatherService = new WeatherService(this._database);
@@ -23,15 +23,7 @@ export class AppService{
         }
     }
 
-    private async Call(method:'get' | 'post', params:any, url:string){
-        const data = await axios({
-            method,
-            url,
-            data:params
-        })
-        if(method === 'get'){
-            return data;
-        }
-        return;
+    public async ParseGet(params:any){
+
     }
 }
