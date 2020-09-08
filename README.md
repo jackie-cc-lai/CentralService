@@ -10,6 +10,7 @@ MongoDB currently provides database storage option for the service - future impl
 
 Run npm run start and package.json will automatically run tsc and run from index.js after typescript is compiled. Env variable needs to be added with NODE_ENV set to "development"
 
+A development secret key (which is just a random string) is hard coded in authService and is not the same as the secret key that will be used by the service
 
 ## Things to do
 
