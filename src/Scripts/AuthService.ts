@@ -27,6 +27,8 @@ export class AuthService{
             host:url,
             date
         }, testPrivateKey, {algorithm:"HS256"});
+
+        // Hash the thing so I don't reveal the token by accident in any way
         const sha = crypto.createHash('SHA256');
 
         const authObj = {
@@ -62,6 +64,7 @@ export class AuthService{
         try{
             const tokenInfo:{host:string, date:number} = jwt.verify(token, testPrivateKey) as unknown as {host:string, date:number};
             const sha = crypto.createHash('SHA256');
+            // Check the hash since I stored the hash not the token
             const tokenStuff = await this._database.GetAuthTokens(sha.update(token).digest('hex'));
             if(!tokenStuff || tokenStuff == null){
                 throw `Token information is not found in database`;
