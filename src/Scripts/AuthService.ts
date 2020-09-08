@@ -3,6 +3,10 @@ import express from 'express';
 import { Database } from './Database';
 import { token } from 'src/Types/token';
 import { ObjectID } from 'mongodb';
+import crypto  = require('crypto');
+
+// local development testing
+const testPrivateKey = 'as98fjh47f328hh89234qf';
 
 export class AuthService{
 
@@ -22,9 +26,11 @@ export class AuthService{
         const jwToken = jwt.sign({
             host:url,
             date
-        }, 'as98fjh47f328hh89234qf', {algorithm:"HS256"});
+        }, testPrivateKey, {algorithm:"HS256"});
+        const sha = crypto.createHash('SHA256');
+
         const authObj = {
-            token:jwToken,
+            token:sha.update(jwToken).digest('hex'),
             expiry:date + 24*60*60*1000,
             host:url
         }
@@ -35,12 +41,11 @@ export class AuthService{
         }
         return jwToken;
     }
-
+    // Check for expiry
     public async Check(token:string, host:string){
         try{
-            const tokenInfo:{host:string, date:number} = jwt.verify(token, 'as98fjh47f328hh89234qf') as unknown as {host:string, date:number};
+            const tokenInfo:{host:string, date:number} = jwt.verify(token, testPrivateKey) as unknown as {host:string, date:number};
             const tokenStuff = await this.Verify(token, host);
-            console.log("Hello");
             if(tokenInfo.host === host){
                 // Return new token if current token is expired
                 if(tokenInfo.date < new Date().getTime() - 24*60*60*1000){
@@ -55,8 +60,9 @@ export class AuthService{
 
     public async Verify(token:string, host:string){
         try{
-            const tokenInfo:{host:string, date:number} = jwt.verify(token, 'as98fjh47f328hh89234qf') as unknown as {host:string, date:number};
-            const tokenStuff = await this._database.GetAuthTokens(token);
+            const tokenInfo:{host:string, date:number} = jwt.verify(token, testPrivateKey) as unknown as {host:string, date:number};
+            const sha = crypto.createHash('SHA256');
+            const tokenStuff = await this._database.GetAuthTokens(sha.update(token).digest('hex'));
             if(!tokenStuff || tokenStuff == null){
                 throw `Token information is not found in database`;
             }

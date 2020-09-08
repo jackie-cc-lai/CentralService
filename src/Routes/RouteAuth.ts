@@ -5,13 +5,11 @@ export class RouteAuth{
     public static async Auth(req:Request,res:Response){
         try{
             const host = req.headers.origin;
-            console.log(req.headers);
             const authService = await CentralService.getAuthService();
             const options = {
                 host
             }
             const token = await authService.Auth(host);
-            console.log(token);
             res.send(token);
         }catch(err){
             res.send("Error");

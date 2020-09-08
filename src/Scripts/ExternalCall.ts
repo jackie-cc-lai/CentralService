@@ -1,16 +1,11 @@
-import Axios from "axios";
+import axios from "axios";
 
 export class ExternalCall{
 
-    public static async Call(method:'get' | 'post', params:any, url:string){
-        const data = await Axios({
-            method,
-            url,
-            data:params
+    public static async get(url:string, params?:any){
+        const data = await axios.get(url).then((res)=>{
+            return res;
         })
-        if(method === 'get'){
-            return data;
-        }
-        return;
+        return data;
     }
 }

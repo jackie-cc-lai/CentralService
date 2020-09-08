@@ -34,8 +34,7 @@ export class RouteApp{
 
             const apiService = await CentralService.getAppService();
             let result = await apiService.ParsePost(req.body);
-
-            res.send("Posting location");
+            res.send(result);
         }catch(err){
             res.send("Error");
         }

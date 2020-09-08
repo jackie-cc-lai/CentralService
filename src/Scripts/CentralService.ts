@@ -14,6 +14,6 @@ export class CentralService{
     }
 
     public static async getAppService(){
-        return new AppService(CentralService.db);
+        return new AppService(CentralService.db, new WeatherService(CentralService.db));
     }
 }

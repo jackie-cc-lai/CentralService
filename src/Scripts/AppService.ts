@@ -5,25 +5,26 @@ import { WeatherService } from './WeatherService';
 
 export class AppService{
     private _database:Database;
-    constructor(db:Database) {
+    private _weather:WeatherService;
+    constructor(db:Database, ws:WeatherService) {
         this._database = db;
+        this._weather = ws;
     }
 
     public async ParsePost(body:any){
         const method = body.method;
         if(method == "GetWeather"){
-            let weatherService = new WeatherService(this._database);
-            let resultCurrent = await weatherService.getCurrentWeather(body.cityId);
-            let resultForecast = await weatherService.getForecast(body.cityId);
-            let response = {
-                current:resultCurrent,
-                forecast:resultForecast
-            }
-            return response;
+            return await this.ParseWeather(body.cityId);
         }
     }
 
     public async ParseGet(params:any){
 
+    }
+
+    private async ParseWeather(cityId:number){ 
+        let response = await this._weather.getWeather(cityId);
+        
+        return response;
     }
 }
