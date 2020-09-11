@@ -14,4 +14,5 @@ A development secret key (which is just a random string) is hard coded in authSe
 
 ## Things to do
 
-Figure out how to get it to production mode and deploying it
+ - Figure out how to get it to production mode and deploying it
+ - Double check authentication - it looks like the tokens are expiring properly but want to make sure
