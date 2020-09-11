@@ -8,4 +8,8 @@ export class ExternalCall{
         })
         return data;
     }
+
+    public static async post(url:string, params:any, header:any){
+
+    }
 }

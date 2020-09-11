@@ -16,6 +16,7 @@ export class WeatherService{
     }
 
     private async initConfig(){
+        if(this._weatherConfig) return;
         let config = await this._database.GetAppInfo('weather');
         this._weatherConfig = config;
     }
@@ -31,13 +32,18 @@ export class WeatherService{
             await this.addCityInfo(weatherResult);
             result = weatherResult;
         }
-        console.log(result.dateRecorded);
         if(result.dateRecorded.getTime() < new Date().getTime() - 1000*60*30){
             let weatherResult = await this.getWeatherInfo(cityId);
             await this.updateCityInfo(weatherResult, result._id);
             result = weatherResult;
         }
         return result;
+    }
+
+    public async getCities(cityName:string){
+        await this.initConfig()
+        let cities = await this._database.GetCitiesByName(cityName);
+        return cities;
     }
     
     private async getWeatherInfo(cityId:number){

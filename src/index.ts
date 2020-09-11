@@ -29,7 +29,7 @@ app.get( "/ping", (req:express.Request, res:express.Response) => {
 });
 app.get("/Auth/Authorize", RouteAuth.Auth);
 app.get("/Auth/Check", RouteAuth.Check);
-app.get("/api/:app", RouteApp.Get);
+app.get("/api/:app/:method?", RouteApp.Get);
 app.post("/api/:app", jsonParser, RouteApp.Post);
 
 // start the Express server

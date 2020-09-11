@@ -14,17 +14,18 @@ export class AppService{
     public async ParsePost(body:any){
         const method = body.method;
         if(method == "GetWeather"){
-            return await this.ParseWeather(body.cityId);
+            return await this._weather.getWeather(body.cityId);
         }
     }
 
-    public async ParseGet(params:any){
-
+    public async ParseGet(params:any, query:any){
+        console.log(params);
+        if(params.app == "Weather"){
+            if(params.method == "GetCity"){
+                let response = await this._weather.getCities(query.name);
+                return response;
+            }
+        }
     }
 
-    private async ParseWeather(cityId:number){ 
-        let response = await this._weather.getWeather(cityId);
-        
-        return response;
-    }
 }

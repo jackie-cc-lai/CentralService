@@ -22,11 +22,17 @@ export class Database{
         this._db = db;
     }
 
-    public async GetCities(cityId:number){
-        let result = this._db.collection(Collections.city).findOne({id:cityId});
+    public async GetCitiesById(cityId:number){
+        let result = await this._db.collection(Collections.city).findOne({id:cityId});
         return result;
     }
-
+    public async GetCitiesByName(cityName:string){
+        console.log(cityName);
+        let result = await this._db.collection(Collections.city).find({name:cityName}).toArray();
+        console.log(result);
+        return result;
+    }
+    
     public async GetWeather(cityId:number):Promise<weatherInfo>{
         let result = await this._db.collection(Collections.weather).findOne({cityId:cityId});
         return result;

@@ -1,5 +1,4 @@
 import { ObjectID } from "mongodb";
-import e from "cors";
 
 export interface weatherInfo{
     _id?:ObjectID;

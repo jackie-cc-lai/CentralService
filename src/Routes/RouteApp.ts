@@ -6,6 +6,7 @@ export class RouteApp{
     public static async Get(req:Request,res:Response){
         try{
             const params = req.params;
+            const query = req.query;
             const host = req.headers.host;
             const authStr = req.headers.authorization;
             const authCode = authStr.split(" ")[1];
@@ -14,9 +15,9 @@ export class RouteApp{
             await authService.Check(authCode, host);
 
             const appService = await CentralService.getAppService();
-            await appService.ParseGet(params);
+            let result = await appService.ParseGet(params, query);
             
-            res.send("Getting location");
+            res.send(result);
         }catch(err){
             res.send("Error");
         }
