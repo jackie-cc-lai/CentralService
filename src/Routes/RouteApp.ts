@@ -15,8 +15,8 @@ export class RouteApp{
             await authService.Check(authCode, host);
 
             const appService = await CentralService.getAppService();
-            let result = await appService.ParseGet(params, query);
-            
+            const result = await appService.ParseGet(params, query);
+
             res.send(result);
         }catch(err){
             res.send("Error");
@@ -34,7 +34,7 @@ export class RouteApp{
             await authService.Check(authCode, host);
 
             const apiService = await CentralService.getAppService();
-            let result = await apiService.ParsePost(req.body);
+            const result = await apiService.ParsePost(req.body);
             res.send(result);
         }catch(err){
             res.send("Error");

@@ -67,7 +67,7 @@ export class AuthService{
             // Check the hash since I stored the hash not the token
             const tokenStuff = await this._database.GetAuthTokens(sha.update(token).digest('hex'));
             if(!tokenStuff || tokenStuff == null){
-                throw `Token information is not found in database`;
+                throw new Error(`Token information is not found in database`);
             }
             return tokenStuff;
         }catch(err){

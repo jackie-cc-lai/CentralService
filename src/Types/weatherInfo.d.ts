@@ -3,8 +3,8 @@ import { ObjectID } from "mongodb";
 export interface weatherInfo{
     _id?:ObjectID;
     cityId:number;
-    currentWeather:currentWeather;
-    forecastWeather:Array<forecastWeather>;
+    currentWeather:CurrentWeather;
+    forecastWeather:Array<ForecastWeather>;
     dateRecorded:Date;
 }
 
@@ -15,14 +15,14 @@ export interface weatherGeneral{
     wind:number;
     windDir:string;
 }
-export interface currentWeather extends weatherGeneral{
+export interface CurrentWeather extends weatherGeneral{
     gust:number;
     feelsLike:number;
     sunrise:number;
     sunset:number;
 }
 
-export interface forecastWeather extends weatherGeneral{
+export interface ForecastWeather extends weatherGeneral{
     wind:number;
     icon:string;
     maxTemp:number;

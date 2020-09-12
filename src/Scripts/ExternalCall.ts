@@ -10,6 +10,6 @@ export class ExternalCall{
     }
 
     public static async post(url:string, params:any, header:any){
-
+        return;
     }
 }

@@ -1,7 +1,6 @@
 import { MongoClient, Db, Collection, ObjectID } from 'mongodb';
 import { token } from '../Types/token';
 import {Collections} from './Collections';
-import res from 'express/lib/response';
 import { AppConfig } from '../Types/appConfig';
 import { weatherInfo } from 'src/Types/weatherInfo';
 
@@ -18,7 +17,7 @@ export class Database{
     }
 
     private async Init(){
-        let db = await this.Connect()
+        let db = await this.Connect();
         this._db = db;
     }
 

@@ -1,7 +1,7 @@
 import { Database } from "./Database";
 import { ExternalCall } from "./ExternalCall";
 import { AppConfig } from "../Types/appConfig";
-import { weatherInfo, forecastWeather, weatherGeneral } from "src/Types/weatherInfo";
+import { weatherInfo, ForecastWeather, weatherGeneral } from "src/Types/weatherInfo";
 import moment from 'moment';
 import { ObjectID } from "mongodb";
 
@@ -17,7 +17,7 @@ export class WeatherService{
 
     private async initConfig(){
         if(this._weatherConfig) return;
-        let config = await this._database.GetAppInfo('weather');
+        const config = await this._database.GetAppInfo('weather');
         this._weatherConfig = config;
     }
 
@@ -26,14 +26,14 @@ export class WeatherService{
         await this.initConfig();
 
         let result = await this._database.GetWeather(cityId);
-        
+
         if(!result || result == null){
-            let weatherResult = await this.getWeatherInfo(cityId);
+            const weatherResult = await this.getWeatherInfo(cityId);
             await this.addCityInfo(weatherResult);
             result = weatherResult;
         }
         if(result.dateRecorded.getTime() < new Date().getTime() - 1000*60*30){
-            let weatherResult = await this.getWeatherInfo(cityId);
+            const weatherResult = await this.getWeatherInfo(cityId);
             await this.updateCityInfo(weatherResult, result._id);
             result = weatherResult;
         }
@@ -41,23 +41,23 @@ export class WeatherService{
     }
 
     public async getCities(cityName:string){
-        await this.initConfig()
-        let cities = await this._database.GetCitiesByName(cityName);
+        await this.initConfig();
+        const cities = await this._database.GetCitiesByName(cityName);
         return cities;
     }
-    
+
     private async getWeatherInfo(cityId:number){
         let url = `${this._weatherConfig.url}/forecast?id=${cityId}&appid=${this._weatherConfig.key}&units=metric`;
-        let forecastResult = await ExternalCall.get(url);
-        let forecastWeather = forecastResult.data.list as unknown as Array<openWeather.forecast>;
+        const forecastResult = await ExternalCall.get(url);
+        const forecastWeather = forecastResult.data.list as unknown as openWeather.forecast[];
         url = `${this._weatherConfig.url}/weather?id=${cityId}&appid=${this._weatherConfig.key}&units=metric`;
-        let currentResult = await ExternalCall.get(url);
-        let currentWeather = currentResult.data as unknown as openWeather.current;
+        const currentResult = await ExternalCall.get(url);
+        const currentWeather = currentResult.data as unknown as openWeather.current;
 
-        const futureWeather:Array<forecastWeather> = this.parseForecast(forecastWeather);
-        
-        let weatherResult:weatherInfo = {
-            cityId:cityId,
+        const futureWeather:ForecastWeather[] = this.parseForecast(forecastWeather);
+
+        const weatherResult:weatherInfo = {
+            cityId,
             currentWeather:{
                 icon:currentWeather.weather[0].icon,
                 temp:currentWeather.main.temp,
@@ -74,19 +74,20 @@ export class WeatherService{
         return weatherResult;
     }
 
-    private parseForecast(forecastWeather:Array<openWeather.forecast>){
+    private parseForecast(forecastWeather:openWeather.forecast[]){
+        console.log(forecastWeather.map(r=>r.main.temp));
         // Since the array of data is every 3 hours a day, separate the entire thing into an array of forecasts by day, with each day being an array
-        const futureWeather:Array<forecastWeather> = [];
+        const futureWeather:ForecastWeather[] = [];
         let i = 0;
         while(i < forecastWeather.length){
-            let weather:Array<weatherGeneral> = [];
+            const weather:weatherGeneral[] = [];
             let j = i;
             while( j < forecastWeather.length && moment(forecastWeather[i].dt_txt).isSame(moment(forecastWeather[j].dt_txt), 'day')){
                 weather.push({
-                    date: moment(forecastWeather[i].dt_txt).toDate(),
-                    icon: forecastWeather[i].weather[0].icon,
-                    temp:forecastWeather[i].main.temp,
-                    wind:forecastWeather[i].wind.speed,
+                    date: moment(forecastWeather[j].dt_txt).toDate(),
+                    icon: forecastWeather[j].weather[0].icon,
+                    temp:forecastWeather[j].main.temp,
+                    wind:forecastWeather[j].wind.speed,
                     windDir:this.parseWindDirection(forecastWeather[i].wind.deg)
                 })
                 j++;
@@ -103,6 +104,7 @@ export class WeatherService{
             })
             i = j;
         }
+        console.log(futureWeather);
         return futureWeather;
     }
 

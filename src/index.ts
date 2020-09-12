@@ -9,7 +9,7 @@ import path  = require('path');
 const allowList = ['http://localhost:3000', 'http://localhost:4200'];
 const jsonParser = bodyParser.json()
 const app = express();
-const port = parseInt(process.env.PORT); // default port to listen
+const port = 8080; // default port to listen
 app.use(cors({
     origin:(origin, callback) =>{
         if(!origin) return callback(null, true);
@@ -21,8 +21,8 @@ app.use(cors({
         return callback(null,true);
     }
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+console.log("Starting service...");
+
 // define a route handler for the default home page
 app.get( "/ping", (req:express.Request, res:express.Response) => {
     res.send( "Service is active" );
@@ -31,7 +31,6 @@ app.get("/Auth/Authorize", RouteAuth.Auth);
 app.get("/Auth/Check", RouteAuth.Check);
 app.get("/api/:app/:method?", RouteApp.Get);
 app.post("/api/:app", jsonParser, RouteApp.Post);
-
 // start the Express server
 app.listen( port, () => {
     console.log( `server started at http://localhost:${ port }` );

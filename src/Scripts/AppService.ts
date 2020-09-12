@@ -22,7 +22,7 @@ export class AppService{
         console.log(params);
         if(params.app == "Weather"){
             if(params.method == "GetCity"){
-                let response = await this._weather.getCities(query.name);
+                const response = await this._weather.getCities(query.name);
                 return response;
             }
         }
