@@ -2,10 +2,12 @@ import http = require('http');
 import axios from 'axios';
 import { Database } from './Database';
 import { WeatherService } from './WeatherService';
+import { GasService } from './GasService';
 
 export class AppService{
     private _database:Database;
     private _weather:WeatherService;
+    private _gasStation:GasService;
     constructor(db:Database, ws:WeatherService) {
         this._database = db;
         this._weather = ws;
@@ -15,6 +17,9 @@ export class AppService{
         const method = body.method;
         if(method == "GetWeather"){
             return await this._weather.getWeather(body.cityId);
+        }
+        if(method == "GetGas"){
+            return await this._gasStation.getStations(body.location);
         }
     }
 

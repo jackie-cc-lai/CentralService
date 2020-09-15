@@ -4,5 +4,6 @@ export interface AppConfig{
     _id?:ObjectID,
     appId:string,
     key:string,
-    url:string
+    url:string,
+    externalId?:string;
 }
