@@ -8,7 +8,7 @@ export class AppService{
     private _database:Database;
     private _weather:WeatherService;
     private _gasStation:GasService;
-    constructor(db:Database, ws:WeatherService) {
+    constructor(db:Database, ws:WeatherService, gs:GasService) {
         this._database = db;
         this._weather = ws;
     }

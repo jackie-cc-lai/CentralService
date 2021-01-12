@@ -2,6 +2,7 @@ import { Database } from "./Database"
 import { WeatherService } from "./WeatherService";
 import { AuthService } from "./AuthService";
 import { AppService } from "./AppService";
+import { GasService } from "./GasService";
 
 export class CentralService{
     // Using this because I don't want to have to instantiate a new database object every time it gets called and it has to connect every single time
@@ -14,6 +15,6 @@ export class CentralService{
     }
 
     public static async getAppService(){
-        return new AppService(CentralService.db, new WeatherService(CentralService.db));
+        return new AppService(CentralService.db, new WeatherService(CentralService.db), new GasService(CentralService.db));
     }
 }
